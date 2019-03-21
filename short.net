@@ -1,0 +1,24 @@
+* C:\users\igor-emlid\My Documents\LTspiceXVII\Lab1\short.asc
+XQ N001 N003 N002 nand
+V1 N001 0 PULSE(0 1 1n 10p 10p 2n 4n)
+V2 N003 0 PULSE(0 1 1n 10p 10p 4n 8n)
+R1 N002 0 100k
+C1 N002 0 100f
+
+* block symbol definitions
+.subckt nand x y c
+M1 c y N001 N002 PMOS l=90n w=400n
+M2 c x N001 N003 PMOS l=90n w=400n
+M3 c x P001 N004 NMOS l=90n w=200n
+M4 P001 y 0 N005 NMOS l=90n w=200n
+V1 N001 0 1
+.include 90nm_bulk.txt
+.ends nand
+
+.model NMOS NMOS
+.model PMOS PMOS
+.lib C:\users\igor-emlid\My Documents\LTspiceXVII\lib\cmp\standard.mos
+.include 90nm_bulk.txt
+.tran 0 8n 0 1p
+.backanno
+.end

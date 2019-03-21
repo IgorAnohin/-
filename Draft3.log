@@ -1,0 +1,4 @@
+Circuit: * C:\users\igor-emlid\My Documents\LTspiceXVII\Lab1\Draft3.asc
+
+Fatal Error: Port(pin) count mismatch between the definition of subcircuit "nand" and instance: "xx1"
+The instance has more connection terminals than the definition.

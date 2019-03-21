@@ -1,0 +1,72 @@
+* C:\users\igor-emlid\My Documents\LTspiceXVII\Lab1\comparator_test.asc
+XX1 N001 N003 N004 N006 N007 N009 N010 N011 N002 N005 N008 comparator
+C1 N002 0 50f
+R1 N002 0 100k
+C2 N005 0 100f
+R2 N005 0 100k
+C3 N008 0 100f
+R3 N008 0 100k
+V1 N001 0 PULSE(0 1 1n 10p 10p 2n 4n)
+V2 N003 0 PULSE(0 1 1n 10p 10p 4n 8n)
+V3 N004 0 PULSE(0 1 1n 10p 10p 8n 16n)
+V4 N006 0 PULSE(0 1 1n 10p 10p 16n 32n)
+V5 N007 0 PULSE(0 1 1n 10p 10p 4n 8n)
+V6 N009 0 PULSE(0 1 10n 10p 10p 5n 10n)
+V7 N010 0 PULSE(0 1 1n 10p 10p 7n 14n)
+V8 N011 0 PULSE(0 1 1n 10p 10p 11n 22n)
+
+* block symbol definitions
+.subckt comparator a0 a1 a2 a3 b0 b1 b2 b3 bg e ag
+XX1 a1 b1 N009 N004 N010 N016 one_comp
+XX2 a2 b2 N010 N005 N011 N014 one_comp
+XX3 a3 b3 N011 N007 e N012 one_comp
+XX4 a0 b0 N008 N001 N009 N018 one_comp
+V1 N008 0 1
+XX5 N001 N004 N002 nand
+XX6 N002 N002 N003 nand
+XX7 N003 P001 bg nand
+XX8 N006 N006 P001 nand
+XX9 N005 N007 N006 nand
+XX10 N016 N018 N017 nand
+XX11 N017 N017 N015 nand
+XX12 P002 N015 ag nand
+XX13 N013 N013 P002 nand
+XX14 N012 N014 N013 nand
+.include 90nm_bulk.txt
+.ends comparator
+
+.subckt one_comp a b pe notl e notg
+XX1 a a N001 nand
+XX2 b b N010 nand
+XX3 N001 b N002 nand
+XX4 N002 N002 N003 nand
+XX5 N003 pe notl nand
+XX6 a N010 N012 nand
+XX7 N012 N012 N011 nand
+XX8 pe N011 notg nand
+XX9 a pe N004 nand
+XX10 N004 N004 N005 nand
+XX11 N005 b N006 nand
+XX12 N006 N007 e nand
+XX13 pe N010 N009 nand
+XX14 N009 N009 N008 nand
+XX15 N001 N008 N007 nand
+.include 90nm_bulk.txt
+.ends one_comp
+
+.subckt nand x y c
+M1 c y N001 N002 PMOS l=90n w=400n
+M2 c x N001 N003 PMOS l=90n w=400n
+M3 c x P001 N004 NMOS l=90n w=200n
+M4 P001 y 0 N005 NMOS l=90n w=200n
+V1 N001 0 1
+.include 90nm_bulk.txt
+.ends nand
+
+.model NMOS NMOS
+.model PMOS PMOS
+.lib C:\users\igor-emlid\My Documents\LTspiceXVII\lib\cmp\standard.mos
+.include 90nm_bulk.txt
+.tran 0 32n 0 1p
+.backanno
+.end
