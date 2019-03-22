@@ -1,0 +1,37 @@
+* C:\users\igor-emlid\My Documents\LTspiceXVII\Lab1\comparator.asc
+XX1 a1 b1 N009 N004 N010 N016 one_comp
+XX2 a2 b2 N010 N005 N011 N014 one_comp
+XX3 a3 b3 N011 N007 e N012 one_comp
+XX4 a0 b0 N008 N001 N009 N018 one_comp
+V1 N008 0 1
+XX5 N001 N004 N002 nand
+XX6 N002 N002 N003 nand
+XX7 N003 P001 bg nand
+XX8 N006 N006 P001 nand
+XX9 N005 N007 N006 nand
+XX10 N016 N018 N017 nand
+XX11 N017 N017 N015 nand
+XX12 P002 N015 ag nand
+XX13 N013 N013 P002 nand
+XX14 N012 N014 N013 nand
+
+* block symbol definitions
+.subckt one_comp a b pe notl e notg
+.ends one_comp
+
+.subckt nand x y c
+M1 c y N001 N002 PMOS l=90n w=400n
+M2 c x N001 N003 PMOS l=90n w=400n
+M3 c x P001 N004 NMOS l=90n w=200n
+M4 P001 y 0 N005 NMOS l=90n w=200n
+V1 N001 0 1
+.include 90nm_bulk.txt
+.ends nand
+
+.model NMOS NMOS
+.model PMOS PMOS
+.lib C:\users\igor-emlid\My Documents\LTspiceXVII\lib\cmp\standard.mos
+.include 90nm_bulk.txt
+.tran 0 8n 0 1p
+.backanno
+.end

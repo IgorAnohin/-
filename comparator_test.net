@@ -1,19 +1,19 @@
 * C:\users\igor-emlid\My Documents\LTspiceXVII\Lab1\comparator_test.asc
-XX1 N001 N003 N004 N006 N007 N009 N010 N011 N002 N005 N008 comparator
-C1 N002 0 50f
-R1 N002 0 100k
-C2 N005 0 100f
-R2 N005 0 100k
-C3 N008 0 100f
-R3 N008 0 100k
+XX1 N001 N002 N003 N005 N007 N008 N010 N011 N004 N006 N009 comparator
 V1 N001 0 PULSE(0 1 1n 10p 10p 2n 4n)
-V2 N003 0 PULSE(0 1 1n 10p 10p 4n 8n)
-V3 N004 0 PULSE(0 1 1n 10p 10p 8n 16n)
-V4 N006 0 PULSE(0 1 1n 10p 10p 16n 32n)
-V5 N007 0 PULSE(0 1 1n 10p 10p 4n 8n)
-V6 N009 0 PULSE(0 1 10n 10p 10p 5n 10n)
-V7 N010 0 PULSE(0 1 1n 10p 10p 7n 14n)
-V8 N011 0 PULSE(0 1 1n 10p 10p 11n 22n)
+C1 N004 0 100f
+R1 N004 0 100k
+C2 N009 0 100f
+R2 N009 0 100k
+C3 N006 0 100f
+R3 N006 0 100k
+V2 N002 0 PULSE(0 1 1n 10p 10p 4n 8n)
+V3 N003 0 PULSE(0 1 1n 10p 10p 8n 16n)
+V4 N005 0 PULSE(0 1 1n 10p 10p 16n 32n)
+V5 N007 0 PULSE(0 1 1n 10p 10p 32n 64n)
+V6 N008 0 PULSE(0 1 1n 10p 10p 64n 128n)
+V7 N010 0 PULSE(0 1 1n 10p 10p 128n 256n)
+V8 N011 0 PULSE(0 1 1n 10p 10p 258n 512n)
 
 * block symbol definitions
 .subckt comparator a0 a1 a2 a3 b0 b1 b2 b3 bg e ag
@@ -37,21 +37,20 @@ XX14 N012 N014 N013 nand
 
 .subckt one_comp a b pe notl e notg
 XX1 a a N001 nand
-XX2 b b N010 nand
-XX3 N001 b N002 nand
+XX2 b b N006 nand
+XX3 N001 pe N002 nand
 XX4 N002 N002 N003 nand
-XX5 N003 pe notl nand
-XX6 a N010 N012 nand
-XX7 N012 N012 N011 nand
-XX8 pe N011 notg nand
-XX9 a pe N004 nand
+XX5 pe N006 N011 nand
+XX6 N011 N011 N012 nand
+XX7 N003 b notl nand
+XX8 a N012 notg nand
+XX9 N001 N006 N004 nand
 XX10 N004 N004 N005 nand
-XX11 N005 b N006 nand
-XX12 N006 N007 e nand
-XX13 pe N010 N009 nand
-XX14 N009 N009 N008 nand
-XX15 N001 N008 N007 nand
-.include 90nm_bulk.txt
+XX11 a b N009 nand
+XX12 N009 N009 N010 nand
+XX13 N005 pe N007 nand
+XX14 pe N010 N008 nand
+XX15 N007 N008 e nand
 .ends one_comp
 
 .subckt nand x y c
@@ -67,6 +66,6 @@ V1 N001 0 1
 .model PMOS PMOS
 .lib C:\users\igor-emlid\My Documents\LTspiceXVII\lib\cmp\standard.mos
 .include 90nm_bulk.txt
-.tran 0 32n 0 1p
+.tran 0 512n 0 1p
 .backanno
 .end
